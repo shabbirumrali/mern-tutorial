@@ -1,21 +1,20 @@
 const express = require('express')
-const router = require('./routes/goalRoutes')
 const dotenv = require('dotenv').config()
-const colors = require('colors')
-const {errorHandler} = require('./middleware/errorMiddleware')
+const { errorHandler } = require('./middleware/errorMiddleware')
+const userRouter = require('./routes/userRoutes')
 const connectDB = require('./config/db')
 
 connectDB()
 
 const app = express()
 
-// use middleware
+// Middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.use('/api/goals', router)
+app.use('/api/goals', require('./routes/goalRoutes'))
+app.use('/api/users', userRouter)
 
 app.use(errorHandler)
 
-
-app.listen(process.env.PORT, () => console.log(`Port Listing at ${process.env.PORT}`))
+app.listen(process.env.PORT, () => {console.log(`Port listing at ${process.env.PORT}`)})
